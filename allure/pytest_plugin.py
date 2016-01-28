@@ -486,7 +486,13 @@ class AllureAgregatingListener(object):
             for a in testcase.iter_attachments():
                 self.write_attach(a)
 
-            self.suites.setdefault(module_id, TestSuite(name=module_name,
+            if '.' in module_name:
+                parent, suite = module_name.split('.')
+                suite_name = '[{parent}]_{suite}'.format(parent=parent, suite=suite)
+            else:
+                suite_name = module_name
+
+            self.suites.setdefault(module_id, TestSuite(name=suite_name,
                                                         description=module_doc,
                                                         tests=[],
                                                         labels=[],
